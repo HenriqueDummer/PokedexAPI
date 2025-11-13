@@ -1,7 +1,7 @@
 <?php
 require_once 'src/config.php';
 
-// Import the namespaced class
+use Controller\PokemonController;
 use Http\Request;
 use Http\Response;
 use Error\APIException;
@@ -12,8 +12,9 @@ $body = file_get_contents("php://input");
 $request = new Request($uri, $method, $body);
 
 switch ($request->getResource()) {
-  case "pokemon":
-    // Implementar request com controller
+  case "pokemons":
+    $pokemonsController = new PokemonController();
+    $pokemonsController->processRequest($request);
     break;
   case "setup.php":
     require_once './src/Database/setup.php';

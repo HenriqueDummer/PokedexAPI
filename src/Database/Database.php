@@ -1,6 +1,6 @@
 <?php
 
-namespace Config;
+namespace Database;
 
 use PDO;
 use PDOException;
@@ -23,7 +23,7 @@ class Database
 
 				self::$connection->exec("PRAGMA foreign_keys = ON;");
 			} catch (PDOException $e) {
-				throw new APIException("Erro ao conectar ao banco de dados: " . $e->getMessage(), 500);	
+				throw new APIException("Erro ao conectar ao banco de dados: " . $e->getMessage(), 500);
 			}
 		}
 
