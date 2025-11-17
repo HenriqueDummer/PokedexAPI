@@ -33,7 +33,16 @@ class PokemonController
           throw new APIException("Method not allowed!", 405);
       }
     } else {
-      // TODO: Implementar busca por ID, PUT, PATCH, DELETE
+      switch ($method) {
+        case 'GET':
+          $pokemon = $this->service->getPokemonById($id);
+          if ($pokemon) {
+            Response::send($pokemon);
+          } else {
+            throw new APIException("Pokémon não encontrado", 404);
+          }
+          return;
+      }
       throw new APIException("Operações com ID não implementadas ainda", 501);
     }
   }
