@@ -15,4 +15,8 @@ class PokemonService
   function getPokemons(){
     return $this->repository->findAll();
   }
+
+  function getPokemonById($id){
+    return $this->repository->findById($id);
+  }
 }
