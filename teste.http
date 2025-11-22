@@ -1,0 +1,21 @@
+# GET / - API ENDPOINTS
+GET http://localhost/pokedexAPI/
+
+###
+
+# GET / Get all pokemons
+GET http://localhost/pokedexAPI/api/pokemons
+
+###
+
+# POST / Create pokemon
+POST http://localhost/pokedexAPI/api/pokemons
+Content-Type: application/json
+
+{
+  "name": "PokemonTeste",
+  "type": "Fogo",
+  "region": "Kanto",
+  "description": "Um pokemon de teste",
+  "level": 1
+}

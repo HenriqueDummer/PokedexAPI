@@ -35,7 +35,8 @@ class PokemonRepository
     return $pokemons;
   }
 
-  public function findById($id){
+  public function findById($id)
+  {
     $stmt = $this->connection->prepare("SELECT * FROM pokemons WHERE id = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
@@ -51,5 +52,19 @@ class PokemonRepository
         $row['level']
       );
     }
+  }
+
+  public function create(Pokemon $pokemon)
+  {
+    $stmt = $this->connection->prepare("INSERT INTO pokemons (name, type, region, description, level) VALUES (:name, :type, :region, :description, :level)");
+    $stmt->bindValue(':name', $pokemon->getName());
+    $stmt->bindValue(':type', $pokemon->getType());
+    $stmt->bindValue(':region', $pokemon->getRegion());
+    $stmt->bindValue(':description', $pokemon->getDescription());
+    $stmt->bindValue(':level', $pokemon->getLevel(), PDO::PARAM_INT);
+    $stmt->execute();
+
+    $pokemon->setId($this->connection->lastInsertId());
+    return $pokemon;
   }
 }
