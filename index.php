@@ -16,9 +16,11 @@ switch ($request->getResource()) {
     $pokemonsController = new PokemonController();
     $pokemonsController->processRequest($request);
     break;
+
   case "setup.php":
     require_once './src/Database/setup.php';
     break;
+
   case null:
     Response::send([
       'autores' => [

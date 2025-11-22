@@ -4,7 +4,7 @@ namespace Model;
 
 class Pokemon implements \JsonSerializable
 {
-  private $id;
+  private ?int $id;
   private $name;
   private $type;
   private $region;
@@ -77,11 +77,6 @@ class Pokemon implements \JsonSerializable
   public function setLevel($level)
   {
     $this->level = $level;
-  }
-
-  private function createId(): string
-  {
-    return uniqid();
   }
 
   public function jsonSerialize(): array
