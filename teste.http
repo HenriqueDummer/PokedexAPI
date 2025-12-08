@@ -3,19 +3,63 @@ GET http://localhost/pokedexAPI/
 
 ###
 
-# GET / Get all pokemons
+# GET ALL
 GET http://localhost/pokedexAPI/api/pokemons
 
 ###
 
-# POST / Create pokemon
+# GET BY TYPE
+GET http://localhost/pokedexAPI/api/pokemons?tipo=Fogo
+
+###
+# GET BY REGION
+GET http://localhost/pokedexAPI/api/pokemons?regiao=Kanto
+
+###
+# GET BY ID
+GET http://localhost/pokedexAPI/api/pokemons/2
+
+###
+
+# POST
 POST http://localhost/pokedexAPI/api/pokemons
 Content-Type: application/json
 
 {
-  "name": "PokemonTeste",
-  "type": "Fogo",
-  "region": "Kanto",
+  "name": "teste",
+  "type": "agua",
+  "region": "teste",
   "description": "Um pokemon de teste",
-  "level": 1
+  "level": 100
 }
+
+###
+
+# PUT
+PUT http://localhost/pokedexAPI/api/pokemons/1
+Content-Type: application/json
+
+{
+  "name": "PokemonAtualizado",
+  "type": "Agua",
+  "region": "Kanto",
+  "description": "Pokemon atualizado via PUT",
+  "level": 5
+}
+
+###
+
+# PATCH
+PATCH http://localhost/pokedexAPI/api/pokemons/1
+Content-Type: application/json
+
+{
+  "name": "Pikachu",
+  "description": "Atualização parcial - só description",
+  "level": 7
+}
+
+###
+
+# DELETE
+DELETE http://localhost/pokedexAPI/api/pokemons/1
