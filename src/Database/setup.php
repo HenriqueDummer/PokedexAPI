@@ -17,7 +17,7 @@ try {
 
   $sql = "CREATE TABLE pokemons(
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
+              name TEXT NOT NULL UNIQUE,
               type TEXT NOT NULL,
               region TEXT NOT NULL,
               description TEXT NOT NULL,
