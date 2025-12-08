@@ -24,7 +24,16 @@ class PokemonController
     if ($id === null) {
       switch ($method) {
         case "GET":
-          $pokemons = $this->service->getPokemons();
+          $query = $request->getQuery();
+          if (isset($query['region']) || isset($query['regiao'])) {
+            $region = $query['region'] ?? $query['regiao'];
+            $pokemons = $this->service->getPokemonsByRegion($region);
+          } elseif (isset($query['type']) || isset($query['tipo'])) {
+            $type = $query['type'] ?? $query['tipo'];
+            $pokemons = $this->service->getPokemonsByType($type);
+          } else {
+            $pokemons = $this->service->getPokemons();
+          }
           error_log(print_r($pokemons, true));
           Response::send($pokemons);
           break;
@@ -48,6 +57,43 @@ class PokemonController
             throw new APIException("Pokémon não encontrado", 404);
           }
           return;
+        case 'PUT':
+          $pokemonData = $this->validateBody($request->getBody());
+          $updated = $this->service->updatePokemon(
+            $id,
+            $pokemonData['name'],
+            $pokemonData['type'],
+            $pokemonData['region'],
+            $pokemonData['description'],
+            intval($pokemonData['level'])
+          );
+          Response::send($updated);
+          return;
+        case 'PATCH':
+          $body = $request->getBody();
+          if (empty($body)) {
+            throw new APIException("O corpo da request está vazio", 400);
+          }
+
+          $camposAtualizados = ['name', 'type', 'region', 'description', 'level'];
+          $updates = [];
+          foreach ($body as $campo => $valor) {
+            if (in_array($campo, $camposAtualizados)) {
+              $updates[$campo] = $valor;
+            }
+          }
+
+          if (isset($updates['level'])) {
+            $updates['level'] = intval($updates['level']);
+          }
+
+          $patched = $this->service->patchPokemon($id, $updates);
+          Response::send($patched);
+          return;
+        case 'DELETE':
+          $this->service->deletePokemon($id);
+          Response::send(null, 204);
+          return;
       }
       throw new APIException("Operações com ID não implementadas ainda", 501);
     }
@@ -56,19 +102,19 @@ class PokemonController
   function validateBody(array $body)
   {
     if (!isset($body["name"]))
-      throw new APIException("Property name is required!", 400);
+      throw new APIException("Propriedade name é obrigatório!", 400);
 
     if (!isset($body["type"]))
-      throw new APIException("Property type is required!", 400);
+      throw new APIException("Propriedade type é obrigatório!", 400);
 
     if (!isset($body["region"]))
-      throw new APIException("Property region is required!", 400);
+      throw new APIException("Propriedae region é obrigatório!", 400);
 
     if (!isset($body["description"]))
-      throw new APIException("Property description is required!", 400);
+      throw new APIException("Propriedade description é obrigatório!", 400);
 
     if (!isset($body["level"]))
-      throw new APIException("Property level is required!", 400);
+      throw new APIException("Propriedade level é obrigatório!", 400);
 
     return $body;
   }
